@@ -68,9 +68,10 @@
 <html>
 <head>
   <meta name="google-signin-client_id" content="244435097633-p66v2db6e4e598ke3im1pvse1bgojhop.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 </head>
 <body>
-  <div id="my-signin2"></div>
+  <div id="my-signin2" data-onsuccess="onSuccess"></div>
   <script>
     function onSuccess(googleUser) {
       console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
@@ -90,7 +91,5 @@
       });
     }
   </script>
-
-  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 </body>
 </html>
