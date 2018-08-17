@@ -101,7 +101,7 @@
     <meta name="google-signin-client_id" content="244435097633-p66v2db6e4e598ke3im1pvse1bgojhop.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script type="text/javascript">
-        auth2 = {};
+        const auth2 = {};
     </script>
   </head>
   <body>
@@ -109,6 +109,7 @@
     <script>
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
+        alert('hola');
         var profile = googleUser.getBasicProfile();
         console.log("ID: " + profile.getId()); // Don't send this directly to your server!
         console.log('Full Name: ' + profile.getName());
