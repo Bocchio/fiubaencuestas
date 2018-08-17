@@ -3,65 +3,82 @@
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="244435097633-p66v2db6e4e598ke3im1pvse1bgojhop.apps.googleusercontent.com">
 
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<body>
-    <p> hola </p>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <div id="my-signin2" data-onsuccess="onSignIn"></div>
-
-    <script>
-        function onSignIn(googleUser) {
-          var profile = googleUser.getBasicProfile();
-          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-          console.log('Name: ' + profile.getName());
-          console.log('Image URL: ' + profile.getImageUrl());
-          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-          console.log('ID token:' + googleUser.getAuthResponse().id_token);
+    <script type="text/javascript">
+        function sendToServer(token) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:8080/user');
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8'); //x-www-form-urlencoded');
+            xhr.onload = function() {
+              console.log('Signed in as: ' + xhr.responseText);
+              respuesta = JSON.parse(xhr.responseText);
+              $('#message').text(respuesta.message);
+            };
+            xhr.send(JSON.stringify({idtoken: token}));
         }
     </script>
 
-    <script>
-    function onSuccess(googleUser) {
-      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    }
-    function onFailure(error) {
-      console.log(error);
-    }
-    function renderButton() {
-      gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
-        'width': 240,
-        'height': 50,
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': onSignIn,
-        'onfailure': onFailure
-      });
-    }
-    </script>
+</head>
 
-    <a href="#" onclick="signOut();">Sign out</a>
-    <script>
-      function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-          console.log('User signed out.');
-        });
-      }
-    </script>
+<body>
+    <div class="container">
+        <h1> FIUBA Encuestas </h1>
 
-    <a href="#" onclick="doStuff();">hacer algo</a>
-    <script>
-      function doStuff() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        console.log(auth2.isSignedIn.get());
-        auth2.signIn().then(function() {
-            console.log(auth2.currentUser.get().getId());
-        });
-      }
-    </script>
+        <h1 id="message"> mensaje </h1>
+
+        <div id="my-signin2" data-onsuccess="onSignIn"></div>
+
+        <script>
+            function onSignIn(googleUser) {
+              var profile = googleUser.getBasicProfile();
+              console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+              console.log('Name: ' + profile.getName());
+              console.log('Image URL: ' + profile.getImageUrl());
+              console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+              id_token = googleUser.getAuthResponse().id_token;
+              //console.log('ID token:' + googleUser.getAuthResponse().id_token);
+              sendToServer(id_token);
+            }
+        </script>
+
+        <script>
+        function onSuccess(googleUser) {
+          console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+        }
+        function onFailure(error) {
+          console.log(error);
+        }
+        function renderButton() {
+          gapi.signin2.render('my-signin2', {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark',
+            'onsuccess': onSignIn,
+            'onfailure': onFailure
+          });
+        }
+        </script>
+
+        <a href="#" onclick="signOut();">Salir</a>
+        <script>
+          function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+              console.log('User signed out.');
+            });
+          }
+        </script>
+
+    </div>
 
     <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
