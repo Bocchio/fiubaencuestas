@@ -51,9 +51,10 @@
 
         <script>
         function onSuccess(googleUser) {
-          console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+          console.log('Bienvenido ' + googleUser.getBasicProfile().getName());
         }
         function onFailure(error) {
+          console.log('Yep... falló, perdón');
           console.log(error);
         }
         function renderButton() {
